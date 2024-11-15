@@ -27,8 +27,8 @@ pip install python-dotenv cx_Oracle
 Configure o arquivo .env:
 ```env
 # Configurações do banco de dados Oracle
-DB_USER=rm560586
-DB_PASSWORD=080386
+DB_USER=seu_user
+DB_PASSWORD=sua_senha
 DB_DSN=oracle.fiap.com.br:1521/ORCL
 
 # Path do Oracle Instant Client

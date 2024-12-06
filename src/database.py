@@ -4,9 +4,27 @@ import random
 from dotenv import load_dotenv
 from datetime import datetime
 
-# Carrega as variáveis de ambiente do arquivo .env
+# Load environment variables first
 print("Loading .env file...")
 load_dotenv(override=True)
+
+# Get Oracle home from .env
+instant_client_path = os.getenv('ORACLE_HOME')
+if not instant_client_path:
+    raise Exception("ORACLE_HOME not set in .env file")
+
+# Initialize Oracle Client before any database operations
+try:
+    cx_Oracle.init_oracle_client(
+        lib_dir=instant_client_path,
+        config_dir=None,
+        error_url=None,
+        driver_name=None
+    )
+except Exception as e:
+    # Ignore "already initialized" error
+    if "already initialized" not in str(e):
+        print(f"Warning: {str(e)}")
 
 def generate_random_data():
     """Gera dados aleatórios simulando sensores."""
@@ -60,7 +78,7 @@ class DatabaseManager:
                 BEGIN
                     EXECUTE IMMEDIATE 'CREATE TABLE sensor_data (
                         id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        timestamp TIMESTAMP,
                         humidity NUMBER,
                         temperature NUMBER,
                         light NUMBER,
@@ -78,23 +96,34 @@ class DatabaseManager:
                 END;
             """)
             
+            # Create index on timestamp for better performance
+            try:
+                self.cursor.execute("""
+                    CREATE INDEX idx_sensor_data_timestamp 
+                    ON sensor_data(timestamp)
+                """)
+            except cx_Oracle.Error:
+                pass  # Index might already exist
+            
             self.connection.commit()
             print("Tabelas criadas/verificadas com sucesso!")
         except cx_Oracle.Error as error:
             print(f"Erro ao criar tabelas: {error}")
             raise
 
-    def insert_sensor_data(self, humidity, temperature, light, btn_p, btn_k, relay_status):
+    def insert_sensor_data(self, humidity, temperature, light, btn_p, btn_k, relay_status, timestamp=None):
         """Insere dados dos sensores no banco."""
         try:
+            if timestamp is None:
+                timestamp = datetime.now()
+                
             self.cursor.execute("""
                 INSERT INTO sensor_data 
-                (humidity, temperature, light, btn_p, btn_k, relay_status)
-                VALUES (:1, :2, :3, :4, :5, :6)
-            """, (humidity, temperature, light, btn_p, btn_k, relay_status))
+                (timestamp, humidity, temperature, light, btn_p, btn_k, relay_status)
+                VALUES (:1, :2, :3, :4, :5, :6, :7)
+            """, (timestamp, humidity, temperature, light, btn_p, btn_k, relay_status))
             
             self.connection.commit()
-            print("Dados inseridos com sucesso!")
         except cx_Oracle.Error as error:
             print(f"Erro ao inserir dados: {error}")
             raise
@@ -102,7 +131,7 @@ class DatabaseManager:
     def get_all_readings(self):
         """Recupera todas as leituras dos sensores."""
         try:
-            self.cursor.execute("SELECT * FROM sensor_data ORDER BY timestamp DESC")
+            self.cursor.execute("SELECT * FROM sensor_data ORDER BY timestamp ASC")
             columns = [col[0] for col in self.cursor.description]
             readings = [dict(zip(columns, row)) for row in self.cursor.fetchall()]
             return readings
@@ -161,19 +190,6 @@ def main():
     db = DatabaseManager()
     
     try:
-        # Configura o Oracle Instant Client
-        instant_client_path = os.getenv('ORACLE_HOME')
-        if instant_client_path:
-            os.environ["ORACLE_HOME"] = instant_client_path
-            os.environ["PATH"] = instant_client_path + os.pathsep + os.environ.get("PATH", "")
-            os.environ["DYLD_LIBRARY_PATH"] = instant_client_path
-            try:
-                cx_Oracle.init_oracle_client(lib_dir=instant_client_path)
-                print("Oracle Client initialized successfully")
-            except Exception as e:
-                if "already initialized" not in str(e):
-                    raise
-
         # Conecta ao banco e cria tabelas
         db.connect()
         db.create_tables()

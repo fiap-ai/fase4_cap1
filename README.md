@@ -8,8 +8,9 @@
 
 # Sistema de Irrigação Inteligente - FarmTech Solutions
 
-## 🔗 Links Importantes
-- [Simulação no Wokwi](https://wokwi.com/projects/414593759570745345)
+## � Links Importantes
+- [Simulação no Wokwi (Fase 3)](https://wokwi.com/projects/414593759570745345)
+- [Simulação no Wokwi (Fase 4)](https://wokwi.com/projects/416913349974451201)
 - [Guia de Instalação](docs/installation.md)
 - [Documentação do Banco de Dados](docs/database.md)
 
@@ -90,7 +91,7 @@ Esta lógica foi implementada para:
 
 - <b>test</b>: Arquivos de teste
 
-## 💻 Funcionalidades
+## � Funcionalidades
 
 ### Sistema de Banco de Dados
 
@@ -131,6 +132,21 @@ Clique na imagem acima para assistir à demonstração completa do sistema, incl
 - Operações CRUD no banco de dados
 - Interação com sensores e atuadores
 - Validação das condições de irrigação
+
+### Monitoramento com Serial Plotter
+![Serial Plotter](assets/fase4-serial-plotter.png)
+O gráfico do Serial Plotter mostra a variação em tempo real da temperatura, umidade e luminosidade, permitindo análise visual do comportamento do sistema.
+
+### Sensores e Atuadores
+![Temperatura](assets/fase4-temperatura.png)
+![Umidade](assets/fase4-umidade.png)
+![Luminosidade](assets/fase4-luminosidade.png)
+![Circuito Completo](assets/fase4-full-circuit-overview.png)
+![Sistema em Operação](assets/fase4-button-pressed-conditions-met.png)
+
+### Dashboard Interativo
+![Dashboard](assets/FarmTech-Solutions-Dashboard.png)
+Interface Streamlit com visualização em tempo real, análises e previsões do modelo ML.
 
 ## 🗃 Histórico de lançamentos
 

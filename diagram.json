@@ -67,6 +67,15 @@
             "top": 12.8,
             "left": -239.2,
             "attrs": {}
+        },
+        {
+            "type": "wokwi-lcd1602",
+            "id": "lcd1",
+            "top": -200,
+            "left": 200,
+            "attrs": {
+                "pins": "i2c"
+            }
         }
     ],
     "connections": [
@@ -210,7 +219,7 @@
         ],
         [
             "dht1:SDA",
-            "esp:22",
+            "esp:15",
             "green",
             [
                 "v48",
@@ -227,6 +236,30 @@
                 "h38.4",
                 "v57.6"
             ]
+        ],
+        [
+            "lcd1:GND",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "lcd1:VCC",
+            "esp:5V",
+            "red",
+            []
+        ],
+        [
+            "lcd1:SDA",
+            "esp:21",
+            "blue",
+            []
+        ],
+        [
+            "lcd1:SCL",
+            "esp:22",
+            "yellow",
+            []
         ]
     ],
     "dependencies": {}

@@ -125,7 +125,7 @@ O sistema envia dados pela porta serial no formato:
 
 ## 📺 Demonstração
 
-[![Vídeo de Demonstração do Projeto](https://img.youtube.com/vi/stxOnMJhoHo/0.jpg)](https://youtu.be/stxOnMJhoHo)
+[![Vídeo de Demonstração do Projeto](https://img.youtube.com/vi/XEcjcFgZdK0/0.jpg)](https://youtu.be/XEcjcFgZdK0)
 
 Clique na imagem acima para assistir à demonstração completa do sistema, incluindo:
 - Simulação do hardware no Wokwi
@@ -149,6 +149,14 @@ O gráfico do Serial Plotter mostra a variação em tempo real da temperatura, u
 Interface Streamlit com visualização em tempo real, análises e previsões do modelo ML.
 
 ## 🗃 Histórico de lançamentos
+
+* 0.2.0 - 10/12/2024
+    * Integração de Machine Learning com Scikit-learn
+    * Dashboard interativo com Streamlit
+    * Display LCD via I2C no ESP32
+    * Serial Plotter para monitoramento visual
+    * Otimizações de memória no código
+    * Melhorias no banco de dados
 
 * 0.1.0 - 25/03/2024
     * Implementação inicial do sistema de irrigação inteligente
